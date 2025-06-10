@@ -34,6 +34,11 @@ export const useUserStore = defineStore(
       }
       userInfo.value = val
     }
+    const setUserAvatar = (avatar: string) => {
+      userInfo.value.avatar = avatar
+      console.log('设置用户头像', avatar)
+      console.log('userInfo', userInfo.value)
+    }
     // 删除用户信息
     const removeUserInfo = () => {
       userInfo.value = { ...userInfoState }
@@ -94,6 +99,7 @@ export const useUserStore = defineStore(
       login,
       wxLogin,
       getUserInfo,
+      setUserAvatar,
       logout,
     }
   },

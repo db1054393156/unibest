@@ -8,17 +8,17 @@
 
 <template>
   <view class="profile-container">
-    {{ JSON.stringify(userStore.userInfo) }}
+    {{ JSON.stringify(userInfo) }}
     <!-- 用户信息区域 -->
     <view class="user-info-section">
       <!-- #ifdef MP-WEIXIN -->
       <button class="avatar-button" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-        <wd-img :src="userStore.userInfo.avatar" width="80px" height="80px" radius="50%"></wd-img>
+        <wd-img :src="userInfo.avatar" width="80px" height="80px" radius="50%"></wd-img>
       </button>
       <!-- #endif -->
       <!-- #ifndef MP-WEIXIN -->
       <view class="avatar-wrapper" @click="run">
-        <wd-img :src="userStore.userInfo.avatar" width="100%" height="100%" radius="50%"></wd-img>
+        <wd-img :src="userInfo.avatar" width="100%" height="100%" radius="50%"></wd-img>
       </view>
       <!-- #endif -->
       <view class="user-details">
@@ -27,13 +27,13 @@
           type="nickname"
           class="weui-input"
           placeholder="请输入昵称"
-          v-model="userStore.userInfo.username"
+          v-model="userInfo.username"
         />
         <!-- #endif -->
         <!-- #ifndef MP-WEIXIN -->
-        <view class="username">{{ userStore.userInfo.username }}</view>
+        <view class="username">{{ userInfo.username }}</view>
         <!-- #endif -->
-        <view class="user-id">ID: {{ userStore.userInfo.id }}</view>
+        <view class="user-id">ID: {{ userInfo.id }}</view>
       </view>
     </view>
 
@@ -88,12 +88,13 @@
 <script lang="ts" setup>
 import { useUserStore } from '@/store'
 import { useToast } from 'wot-design-uni'
-import { uploadFileUrl, useUpload } from '@/utils/uploadFile'
+import { useUpload } from '@/utils/uploadFile'
 import { storeToRefs } from 'pinia'
 import { IUploadSuccessInfo } from '@/api/login.typings'
 
 const userStore = useUserStore()
-
+// 使用storeToRefs解构userInfo
+const { userInfo } = storeToRefs(userStore)
 const toast = useToast()
 const hasLogin = ref(false)
 
@@ -106,10 +107,13 @@ onShow((options) => {
 // #ifndef MP-WEIXIN
 // 上传头像
 const { run } = useUpload<IUploadSuccessInfo>(
-  uploadFileUrl.USER_AVATAR,
+  import.meta.env.VITE_UPLOAD_BASEURL,
   {},
   {
-    onSuccess: (res) => useUserStore().getUserInfo(),
+    onSuccess: (res) => {
+      console.log('h5头像上传成功', res)
+      useUserStore().setUserAvatar(res.url)
+    },
   },
 )
 // #endif
@@ -134,10 +138,13 @@ const onChooseAvatar = (e: any) => {
   console.log('选择头像', e.detail)
   const { avatarUrl } = e.detail
   const { run } = useUpload<IUploadSuccessInfo>(
-    uploadFileUrl.USER_AVATAR,
+    import.meta.env.VITE_UPLOAD_BASEURL,
     {},
     {
-      onSuccess: (res) => useUserStore().getUserInfo(),
+      onSuccess: (res) => {
+        console.log('wx头像上传成功', res)
+        useUserStore().setUserAvatar(res.url)
+      },
     },
     avatarUrl,
   )
@@ -162,7 +169,7 @@ const handlePassword = () => {
 // 消息通知
 const handleInform = () => {
   // uni.navigateTo({ url: `/pages/mine/inform/index` })
-  toast.success('功能开发中')
+  toast.show('功能开发中')
 }
 // 应用更新
 const handleAppUpdate = () => {
@@ -173,9 +180,9 @@ const handleAppUpdate = () => {
     // 请求完新版本信息的回调
     // console.log(res.hasUpdate)
     if (res.hasUpdate) {
-      toast.success('检测到新版本，正在下载中...')
+      toast.show('检测到新版本，正在下载中...')
     } else {
-      toast.success('已是最新版本')
+      toast.show('已是最新版本')
     }
   })
   updateManager.onUpdateReady(function (res) {
@@ -198,7 +205,7 @@ const handleAppUpdate = () => {
   // #endif
 
   // #ifndef MP
-  toast.success('功能开发中')
+  toast.show('功能开发中')
   // #endif
 }
 // 关于我们
@@ -217,7 +224,7 @@ const handleClearCache = () => {
           uni.clearStorageSync()
           // 清除用户信息并跳转到登录页
           useUserStore().logout()
-          toast.success('清除缓存成功')
+          toast.show('清除缓存成功')
         } catch (err) {
           console.error('清除缓存失败:', err)
           toast.error('清除缓存失败')
@@ -237,7 +244,7 @@ const handleLogout = () => {
         useUserStore().logout()
         hasLogin.value = false
         // 执行退出登录逻辑
-        toast.success('退出登录成功')
+        toast.show('退出登录成功')
         // #ifdef MP-WEIXIN
         // 微信小程序，去首页
         // uni.reLaunch({ url: '/pages/index/index' })
