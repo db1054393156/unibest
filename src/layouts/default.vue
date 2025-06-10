@@ -8,11 +8,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { ConfigProviderThemeVars } from 'wot-design-uni'
+import { useThemeStore } from '@/store'
+import { storeToRefs } from 'pinia'
 
-const themeVars: ConfigProviderThemeVars = {
-  // colorTheme: 'red',
-  // buttonPrimaryBgColor: '#07c160',
-  // buttonPrimaryColor: '#07c160',
-}
+const themeStore = useThemeStore()
+const { themeVars } = storeToRefs(themeStore)
 </script>

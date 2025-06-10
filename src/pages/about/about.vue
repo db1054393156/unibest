@@ -16,7 +16,7 @@
     >
       <view class="text-center text-3xl mt-8">
         鸽友们好，我是
-        <text class="text-red-500">菲鸽</text>
+        <text class="text-[var(--wot-color-theme)]">菲鸽</text>
       </view>
       <!-- <button @click="toSubPage()">去分包</button> -->
       <view class="test-css">测试 scss 样式</view>
