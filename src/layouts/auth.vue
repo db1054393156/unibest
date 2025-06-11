@@ -4,15 +4,12 @@
     <wd-toast />
     <wd-message-box />
     <privacy-popup />
-    <login-pop ref="loginPopRef" />
   </wd-config-provider>
 </template>
 
 <script lang="ts" setup>
 import { useThemeStore } from '@/store'
 import { storeToRefs } from 'pinia'
-import LoginPop from '@/components/LoginPop/index.vue'
-import { loginPopRef } from '@/hooks/useLoginPopup'
 
 const themeStore = useThemeStore()
 const { themeVars } = storeToRefs(themeStore)

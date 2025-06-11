@@ -92,6 +92,8 @@ import { useUpload } from '@/utils/uploadFile'
 import { storeToRefs } from 'pinia'
 import { IUploadSuccessInfo } from '@/api/login.typings'
 
+import { openLoginPopup } from '@/hooks/useLoginPopup'
+
 const userStore = useUserStore()
 // 使用storeToRefs解构userInfo
 const { userInfo } = storeToRefs(userStore)
@@ -169,7 +171,8 @@ const handlePassword = () => {
 // 消息通知
 const handleInform = () => {
   // uni.navigateTo({ url: `/pages/mine/inform/index` })
-  toast.show('功能开发中')
+  // toast.show('功能开发中')
+  openLoginPopup()
 }
 // 应用更新
 const handleAppUpdate = () => {

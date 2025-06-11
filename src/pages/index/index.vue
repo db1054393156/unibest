@@ -27,35 +27,47 @@
       模板分支是：
       <text class="text-green-500">base</text>
     </view>
+    <view class="text-center mt-4" v-if="appStore.config.website.shop_name">
+      网站名称：
+      <text class="text-blue-500">{{ appStore.config.website.shop_name }}</text>
+    </view>
+    <view class="text-center mt-4" v-if="appStore.config.version">
+      系统版本：
+      <text class="text-blue-500">{{ appStore.config.version }}</text>
+    </view>
   </view>
 </template>
 
 <script lang="ts" setup>
 import PLATFORM from '@/utils/platform'
+import { useAppStore } from '@/store'
 
 defineOptions({
   name: 'Home',
 })
 
+// 获取app store中的配置
+const appStore = useAppStore()
+
 // 获取屏幕边界到安全区域距离
 let safeAreaInsets
 // #ifdef MP-WEIXIN
 // 微信小程序使用新的API
-const systemInfo = wx.getWindowInfo()
-safeAreaInsets = systemInfo.safeArea
+const wxSystemInfo = wx.getWindowInfo()
+safeAreaInsets = wxSystemInfo.safeArea
   ? {
-      top: systemInfo.safeArea.top,
-      right: systemInfo.windowWidth - systemInfo.safeArea.right,
-      bottom: systemInfo.windowHeight - systemInfo.safeArea.bottom,
-      left: systemInfo.safeArea.left,
+      top: wxSystemInfo.safeArea.top,
+      right: wxSystemInfo.windowWidth - wxSystemInfo.safeArea.right,
+      bottom: wxSystemInfo.windowHeight - wxSystemInfo.safeArea.bottom,
+      left: wxSystemInfo.safeArea.left,
     }
   : null
 // #endif
 
 // #ifndef MP-WEIXIN
 // 其他平台继续使用uni API
-const systemInfo = uni.getSystemInfoSync()
-safeAreaInsets = systemInfo.safeAreaInsets
+const uniSystemInfo = uni.getSystemInfoSync()
+safeAreaInsets = uniSystemInfo.safeAreaInsets
 // #endif
 const author = ref('菲鸽')
 const description = ref(

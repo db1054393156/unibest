@@ -10,6 +10,9 @@
 
 :root,
 page {
+  --login-bg-color:
+    linear-gradient(127deg, rgba(255, 255, 255, 0) 31.84%, rgba(255, 128, 0, 0.2) 91.66%),
+    rgba(255, 255, 255, 0.95);
   // 修改按主题色
   // --wot-color-theme: #37c2bc;
 

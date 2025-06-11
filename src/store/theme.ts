@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import type { ConfigProviderThemeVars } from 'wot-design-uni'
 
 const defaultThemeVars: ConfigProviderThemeVars = {
-  colorTheme: 'rgb(9, 87, 222)',
-  buttonPrimaryBgColor: '#0957DE',
+  colorTheme: '#FF8000',
+  buttonPrimaryBgColor: 'linear-gradient(65deg, #FF6A00 -0.9%, #FFA91F 77.57%)',
   buttonPrimaryColor: '#ffffff',
   colorSuccess: '#34d19d',
   colorWarning: '#f0883a',

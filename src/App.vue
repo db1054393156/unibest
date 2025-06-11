@@ -2,11 +2,15 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'
 import { usePageAuth } from '@/hooks/usePageAuth'
+import { useAppStore } from '@/store'
 
+const appStore = useAppStore()
 usePageAuth()
 
 onLaunch(() => {
   console.log('App Launch')
+  // 初始化应用配置
+  appStore.initAppConfig()
 })
 onShow(() => {
   console.log('App Show')
